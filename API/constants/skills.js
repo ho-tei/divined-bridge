@@ -7,6 +7,7 @@ module.exports = function calcSkill(skill, experience, type) {
   if (skill === "social") table = "social";
   if (skill === "dungeoneering") table = "catacombs";
   if (skill === "hotm") table = "hotm";
+  if (type === "crop") table = skill
 
   if (experience <= 0) {
     return {
@@ -32,6 +33,7 @@ module.exports = function calcSkill(skill, experience, type) {
     if (xp > experience) {
       xp -= xp_tables[table][i - 1];
     } else {
+      console.log("getttt " + i.toString())
       if (i <= maxLevel) level = i;
     }
   }
