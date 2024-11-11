@@ -1,7 +1,6 @@
 # Hypixel Discord Chat Bridge
 
-Forked from https://github.com/DuckySoLucky/hypixel-discord-chat-bridge
-Modified to fix issues & customized to guilds liking
+Forked from https://github.com/DuckySoLucky/hypixel-discord-chat-bridge, Modified to fix issues & customized to guilds liking
 
 A two-way chat bridge between [Hypixel](https://hypixel.net/) guild chat and a [Discord](https://discord.com/) channel. The application utilizes [discord.js v14](https://github.com/discordjs/discord.js) for communicating with Discord, and [mineflayer](https://github.com/PrismarineJS/mineflayer) for communicating with Hypixel.
 
