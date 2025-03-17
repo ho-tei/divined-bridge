@@ -8,6 +8,7 @@ const { readFileSync } = require("fs");
 if (config.verification.autoUpdater) {
   Logger.discordMessage(`RoleSync ready, executing every ${config.verification.autoUpdaterInterval} hours.`);
 
+  // executes onece every restart, roles user if they have been in guild for >2 weeks
   const linkedData = readFileSync("data/linked.json");
   if (linkedData === undefined) {
     return Logger.errorMessage("No linked data found");
@@ -21,7 +22,7 @@ if (config.verification.autoUpdater) {
   try {
     hypixel.getGuild("name", "Divined").then((guild) => {
       guild.members.forEach(async (member) => {
-        if ((Date.now() - member.joinedAtTimestamp) > 604800) {
+        if ((Date.now() - member.joinedAtTimestamp) > 1209600) {
           const discordID = Object.keys(linked).find((key) => linked[key] === member.uuid);
           if (discordID === undefined) {
             return Logger.warnMessage(`${member} is not linked`);
