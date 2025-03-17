@@ -13,7 +13,7 @@ if (config.verification.autoUpdater) {
     Logger.discordMessage("RoleSync successfully executed.");
   });
 
-  const linkedData = readFileSync("data/linked.json");
+  const linkedData = readFileSync("../../../data/linked.json");
   if (linkedData === undefined) {
     return console.log("No linked data found");
   }
