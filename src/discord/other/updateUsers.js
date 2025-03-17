@@ -22,21 +22,22 @@ if (config.verification.autoUpdater) {
     hypixel.getGuild("name", "Divined").then((guild) => {
       Logger.discordMessage("Guild fetched");
       guild.members.forEach(async (member) => {
+        member.joi
         if (((Date.now() / 1000) - member.joinedAtTimestamp) > 604800) {
           Logger.warnMessage(">1week");
           const discordID = Object.keys(linked).find((key) => linked[key] === member.uuid);
           if (discordID === undefined) {
-            return console.log(`${member} is not linked`);
+            return Logger.warnMessage(`${member} is not linked`);
           }
   
           // asign role
           try {
-            const guild = await global.client.guilds.fetch("1204303173150449696"); //! hard coded guild id!
-            const member = await guild.members.fetch(discordID);
+
+            const member = await global.guild.members.fetch(discordID);
             await member.roles.add('1345409650719457312');
-            console.log(`Role assigned to ${member.user.tag}`);
+            Logger.discordMessage(`Role assigned to ${member.user.tag}`);
           } catch (error) {
-            console.error("Error assigning role:", error);
+            Logger.errorMessage("Error assigning role:", error);
           }
   
         } else {
