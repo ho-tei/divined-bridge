@@ -4,6 +4,7 @@ const config = require("../../../config.json");
 const Logger = require("../../Logger.js");
 const cron = require("node-cron");
 const guild = hypixel.getGuild("name", "Divined"); //! hard coded guild name but its whatever
+const { readFileSync } = require("fs");
 
 if (config.verification.autoUpdater) {
   Logger.discordMessage(`RoleSync ready, executing every ${config.verification.autoUpdaterInterval} hours.`);
