@@ -3,7 +3,7 @@ const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
 
 const guild = hypixel.getGuild("name", "Divined"); //! hard coded guild name but its whatever
 
-setInterval(async () => {
+/*setInterval(async () => {
   const linkedData = readFileSync("data/linked.json");
   if (linkedData === undefined) {
     return console.log("No linked data found");
@@ -44,3 +44,4 @@ setInterval(async () => {
     console.log(e);
   }
 }, 3600000); // 1 hour
+*/
