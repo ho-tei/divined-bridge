@@ -31,7 +31,7 @@ class MinecraftManager extends CommunicationBridge {
     this.stateHandler.registerEvents(this.bot);
     this.chatHandler.registerEvents(this.bot);
 
-    require("./other/")
+    require("./other/autoRoleAfterJoin.js");
     require("./other/eventNotifier.js");
     require("./other/skyblockNotifier.js");
   }
