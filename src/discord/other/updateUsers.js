@@ -20,11 +20,8 @@ if (config.verification.autoUpdater) {
 
   try {
     hypixel.getGuild("name", "Divined").then((guild) => {
-      Logger.discordMessage("Guild fetched");
       guild.members.forEach(async (member) => {
-        member.joi
-        if (((Date.now() / 1000) - member.joinedAtTimestamp) > 604800) {
-          Logger.warnMessage(">1week");
+        if ((Date.now() - member.joinedAtTimestamp) > 604800) {
           const discordID = Object.keys(linked).find((key) => linked[key] === member.uuid);
           if (discordID === undefined) {
             return Logger.warnMessage(`${member} is not linked`);
@@ -47,7 +44,7 @@ if (config.verification.autoUpdater) {
     });
 
   } catch (e) {
-    console.log(e);
+    Logger.errorMessage(e);
   }
 
   cron.schedule(`0 */${config.verification.autoUpdaterInterval} * * *`, async () => {
