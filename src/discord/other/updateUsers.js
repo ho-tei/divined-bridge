@@ -7,27 +7,23 @@ const { readFileSync } = require("fs");
 
 if (config.verification.autoUpdater) {
   Logger.discordMessage(`RoleSync ready, executing every ${config.verification.autoUpdaterInterval} hours.`);
-  cron.schedule(`0 */${config.verification.autoUpdaterInterval} * * *`, async () => {
-    Logger.discordMessage("Executing RoleSync...");
-    await updateRolesCommand.execute(null, true);
-    Logger.discordMessage("RoleSync successfully executed.");
-  });
 
-  const linkedData = readFileSync("../../../data/linked.json");
+  const linkedData = readFileSync("data/linked.json");
   if (linkedData === undefined) {
-    return console.log("No linked data found");
+    return Logger.errorMessage("No linked data found");
   }
 
   const linked = JSON.parse(linkedData);
   if (linked === undefined) {
-    return console.log("Linked data may be malformed");
+    return Logger.errorMessage("Linked data may be malformed");
   }
 
   try {
     hypixel.getGuild("name", "Divined").then((guild) => {
+      Logger.discordMessage("Guild fetched");
       guild.members.forEach(async (member) => {
         if (((Date.now() / 1000) - member.joinedAtTimestamp) > 604800) {
-          console.log(">1week");
+          Logger.warnMessage(">1week");
           const discordID = Object.keys(linked).find((key) => linked[key] === member.uuid);
           if (discordID === undefined) {
             return console.log(`${member} is not linked`);
@@ -44,7 +40,7 @@ if (config.verification.autoUpdater) {
           }
   
         } else {
-          config.log(`${member} has been in the guild for less than a week`);
+          Logger.warnMessage(`${member} has been in the guild for less than a week`);
         }
       });
     });
@@ -52,4 +48,12 @@ if (config.verification.autoUpdater) {
   } catch (e) {
     console.log(e);
   }
+
+  cron.schedule(`0 */${config.verification.autoUpdaterInterval} * * *`, async () => {
+    Logger.discordMessage("Executing RoleSync...");
+    await updateRolesCommand.execute(null, true);
+    Logger.discordMessage("RoleSync successfully executed.");
+  });
+
+  
 }
