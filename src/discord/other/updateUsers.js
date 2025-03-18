@@ -30,8 +30,9 @@ if (config.verification.autoUpdater) {
   
           // asign role
           try {
-
             const member = await global.guild.members.fetch(discordID);
+            if(member.roles.cache.has(config.verification.eligibilityRole)) return Logger.discordMessage(`User ${member.user.tag} already has eligibility role`);
+
             await member.roles.add(config.verification.eligibilityRole);
             Logger.discordMessage(`Role assigned to ${member.user.tag}`);
           } catch (error) {
