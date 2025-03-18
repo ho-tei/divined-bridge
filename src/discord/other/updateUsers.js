@@ -32,7 +32,7 @@ if (config.verification.autoUpdater) {
           try {
 
             const member = await global.guild.members.fetch(discordID);
-            await member.roles.add('1345409650719457312');
+            await member.roles.add(config.verification.eligibilityRole);
             Logger.discordMessage(`Role assigned to ${member.user.tag}`);
           } catch (error) {
             Logger.errorMessage("Error assigning role:", error);

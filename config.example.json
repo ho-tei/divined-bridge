@@ -110,6 +110,7 @@
     "verifiedRole": "VERIFIED_ROLE_ID",
     "removeVerificationRole": true,
     "guildMemberRole": "GUILD_MEMBER_ROLE_ID",
+    "eligibilityRole": "ELIGIBILITY_ROLE_ID",
     "autoUpdater": true,
     "autoUpdaterInterval": 24,
     "name": "{username}",
