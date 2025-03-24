@@ -3,6 +3,7 @@ const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
 const { writeFileSync, readFileSync } = require("fs");
 const config = require("../../../config.json");
 const { EmbedBuilder, MessageFlags } = require("discord.js");
+const { SuccessEmbed } = require("../../contracts/embedHandler.js");
 
 module.exports = {
   name: "verify",
