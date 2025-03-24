@@ -27,11 +27,11 @@ module.exports = {
 
       if (user !== undefined) {
         interaction.user = user;
-        interaction.member = await guild.members.fetch(interaction.user.id);
+        interaction.member = await interaction.guild.members.fetch(interaction.user.id);
       }
 
       if (!interaction.member) {
-        interaction.member = await guild.members.fetch(interaction.user.id);
+        interaction.member = await interaction.guild.members.fetch(interaction.user.id);
       }
 
       const uuid = linked[interaction.user.id];
@@ -157,7 +157,11 @@ module.exports = {
         { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
       );
 
-      await interaction.followUp({ embeds: [updateRole], ephemeral: true });
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp({ embeds: [updateRole], ephemeral: true });
+      } else {
+        await interaction.editReply({ embeds: [updateRole] });
+      }
     } catch (error) {
       const errorEmbed = new EmbedBuilder()
         .setColor(15548997)
@@ -168,7 +172,11 @@ module.exports = {
           iconURL: "https://i.imgur.com/uUuZx2E.png",
         });
 
-      await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
+      } else {
+        await interaction.editReply({ embeds: [errorEmbed] });
+      }
     }
   },
 };
