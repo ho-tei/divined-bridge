@@ -1,10 +1,22 @@
 const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
-const { replaceVariables } = require("../../contracts/helperFunctions.js");
-const { SuccessEmbed } = require("../../contracts/embedHandler.js");
-const { EmbedBuilder } = require("discord.js");
+const { writeFileSync, readFileSync } = require("fs");
 const config = require("../../../config.json");
-const { readFileSync } = require("fs");
+const { EmbedBuilder, MessageFlags } = require("discord.js");
+const { SuccessEmbed } = require("../../contracts/embedHandler.js");
+
+module.exports = {
+  name: "verify",
+  description: "Connect your Discord account to Minecraft",
+  verificationCommand: true,
+  options: [
+    {
+      name: "name",
+      description: "Minecraft Username",
+      type: 3,
+      required: true,
+    },
+  ],
 
 execute: async (interaction, user, bypassChecks = false) => {
     try {
