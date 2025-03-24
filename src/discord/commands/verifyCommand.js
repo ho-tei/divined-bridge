@@ -82,7 +82,7 @@ module.exports = {
         { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
       );
 
-      await interaction.followUp({ embeds: [embed], ephemeral: true });
+      await interaction.reply({ embeds: [embed], ephemeral: true });
 
       const updateRolesCommand = require("./updateCommand.js");
       if (updateRolesCommand === undefined) {
