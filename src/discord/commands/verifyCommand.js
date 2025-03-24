@@ -20,7 +20,7 @@ module.exports = {
 
 execute: async (interaction, user, bypassChecks = false) => {
     try {
-        await interaction.deferReply({ ephemeral: true }); // Defer to prevent instant reply conflict
+        await interaction.deferReply({ ephemeral: true });
 
         const linkedData = readFileSync("data/linked.json");
         if (!linkedData) {
@@ -71,7 +71,7 @@ execute: async (interaction, user, bypassChecks = false) => {
             { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" }
         );
 
-        await interaction.editReply({ embeds: [embed], ephemeral: true }); // Edit the deferred reply
+        await interaction.editReply({ embeds: [embed], ephemeral: true });
 
         const updateRolesCommand = require("./updateCommand.js");
         if (!updateRolesCommand) {
