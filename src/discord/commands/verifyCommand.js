@@ -76,16 +76,12 @@ module.exports = {
       linked[interaction.user.id] = uuid;
       writeFileSync("data/linked.json", JSON.stringify(linked, null, 2));
 
-      const embed = new EmbedBuilder()
-        .setColor("4BB543")
-        .setAuthor({ name: "Successfully linked!" })
-        .setDescription(`${user ? `<@${user.id}>'s` : "Your"} account has been successfully linked to \`${nickname}\``)
-        .setFooter({
-          text: `by @.kathund | /help [command] for more information`,
-          iconURL: "https://i.imgur.com/uUuZx2E.png",
-        });
+      const embed = new SuccessEmbed(
+        `${user ? `<@${user.id}>'s` : "Your"} account has been successfully linked to \`${nickname}\``,
+        { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
+      );
 
-      await interaction.followUp({ embeds: [embed], ephemeral: true});
+      await interaction.followUp({ embeds: [embed], ephemeral: true });
 
       const updateRolesCommand = require("./updateCommand.js");
       if (updateRolesCommand === undefined) {
