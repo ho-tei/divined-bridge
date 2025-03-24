@@ -6,6 +6,11 @@ const { EmbedBuilder } = require("discord.js");
 const config = require("../../../config.json");
 const { readFileSync } = require("fs");
 
+module.exports = {
+  name: "update",
+  verificationCommand: true,
+  description: "Update your current roles",
+
 execute: async (interaction, user) => {
     try {
         const linkedData = readFileSync("data/linked.json");
