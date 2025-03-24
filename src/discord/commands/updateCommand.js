@@ -64,7 +64,7 @@ execute: async (interaction, user) => {
                 iconURL: "https://i.imgur.com/uUuZx2E.png",
             });
 
-        await interaction.followUp({ embeds: [errorEmbed], ephemeral: true }); // Only follow up
+        await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
     }
   },
 };
