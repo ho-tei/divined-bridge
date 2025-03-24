@@ -18,8 +18,10 @@ module.exports = {
     },
   ],
 
-execute: async (interaction, user) => {
+execute: async (interaction, user, bypassChecks = false) => {
     try {
+        await interaction.deferReply({ ephemeral: true }); // Defer to prevent instant reply conflict
+
         const linkedData = readFileSync("data/linked.json");
         if (!linkedData) {
             throw new HypixelDiscordChatBridgeError("The linked data file does not exist. Please contact an administrator.");
@@ -30,38 +32,60 @@ execute: async (interaction, user) => {
             throw new HypixelDiscordChatBridgeError("The linked data file is malformed. Please contact an administrator.");
         }
 
-        if (user !== undefined) {
+        if (bypassChecks === true && user !== undefined) {
             interaction.user = user;
-            interaction.member = await guild.members.fetch(interaction.user.id);
         }
 
-        if (!interaction.member) {
-            interaction.member = await guild.members.fetch(interaction.user.id);
+        if (Object.keys(linked).includes(interaction.user.id)) {
+            if (bypassChecks === true) {
+                delete linked[interaction.user.id];
+            } else {
+                throw new HypixelDiscordChatBridgeError("You are already linked to a Minecraft account. Please run /unverify first.");
+            }
         }
 
-        const uuid = linked[interaction.user.id];
-        if (!uuid) {
-            throw new HypixelDiscordChatBridgeError("You are not linked to a Minecraft account.");
+        const username = interaction.options.getString("name");
+        const { socialMedia, nickname, uuid } = await hypixelRebornAPI.getPlayer(username);
+        if (Object.values(linked).includes(uuid)) {
+            if (bypassChecks === true) {
+                delete linked[Object.keys(linked).find((key) => linked[key] === uuid)];
+            } else {
+                throw new HypixelDiscordChatBridgeError("This player is already linked to a Discord account. Please contact an administrator.");
+            }
         }
 
-        const [hypixelGuild, player] = await Promise.all([
-            hypixelRebornAPI.getGuild("player", bot.username),
-            hypixelRebornAPI.getPlayer(uuid),
-        ]);
-
-        if (!hypixelGuild) {
-            throw new HypixelDiscordChatBridgeError("Guild not found.");
+        const discordUsername = socialMedia.find((media) => media.id === "DISCORD")?.link;
+        if (discordUsername === undefined && bypassChecks !== true) {
+            throw new HypixelDiscordChatBridgeError("This player does not have a Discord linked.");
         }
 
-        interaction.member.setNickname(player.nickname, "Updated Roles");
+        if (discordUsername?.toLowerCase() !== interaction.user.username && bypassChecks !== true) {
+            throw new HypixelDiscordChatBridgeError(`The player '${nickname}' has linked their Discord account to a different account ('${discordUsername}').`);
+        }
 
-        const updateRole = new SuccessEmbed(
-            `<@${interaction.user.id}>'s roles have been successfully synced with \`${player.nickname}\`!`,
+        linked[interaction.user.id] = uuid;
+        writeFileSync("data/linked.json", JSON.stringify(linked, null, 2));
+
+        const embed = new SuccessEmbed(
+            `${user ? `<@${user.id}>'s` : "Your"} account has been successfully linked to \`${nickname}\``,
             { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" }
         );
 
-        await interaction.followUp({ embeds: [updateRole], ephemeral: true });
+        await interaction.editReply({ embeds: [embed], ephemeral: true }); // Edit the deferred reply
+
+        const updateRolesCommand = require("./updateCommand.js");
+        if (!updateRolesCommand) {
+            throw new HypixelDiscordChatBridgeError("The update command does not exist. Please contact an administrator.");
+        }
+
+        await updateRolesCommand.execute(interaction, user);
     } catch (error) {
+        console.log(error);
+        error = error.toString()
+            .replaceAll("Error: [hypixel-api-reborn] ", "")
+            .replaceAll("Unprocessable Entity! For help join our Discord Server https://discord.gg/NSEBNMM",
+                "This player does not exist. (Mojang API might be down)");
+
         const errorEmbed = new EmbedBuilder()
             .setColor(15548997)
             .setAuthor({ name: "An Error has occurred" })
@@ -71,7 +95,7 @@ execute: async (interaction, user) => {
                 iconURL: "https://i.imgur.com/uUuZx2E.png",
             });
 
-        await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
+        await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
     }
   },
 };
