@@ -20,6 +20,8 @@ module.exports = {
 
   execute: async (interaction, user, bypassChecks = false) => {
     try {
+      await interaction.deferReply({ ephemeral: true });
+
       const linkedData = readFileSync("data/linked.json");
       if (linkedData === undefined) {
         throw new HypixelDiscordChatBridgeError(
@@ -58,14 +60,6 @@ module.exports = {
         }
       }
 
-
-      
-      const embed = new SuccessEmbed(
-        `${user ? `<@${user.id}>'s` : "Your"} account has been successfully linked to \`${nickname}\``,
-        { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
-      );
-      await interaction.deferReply();
-
       const discordUsername = socialMedia.find((media) => media.id === "DISCORD")?.link;
       if (discordUsername === undefined && bypassChecks !== true) {
         throw new HypixelDiscordChatBridgeError("This player does not have a Discord linked.");
@@ -85,8 +79,12 @@ module.exports = {
       linked[interaction.user.id] = uuid;
       writeFileSync("data/linked.json", JSON.stringify(linked, null, 2));
 
-    
-      await interaction.editReply({ embeds: [embed], ephemeral: true });
+      const embed = new SuccessEmbed(
+        `${user ? `<@${user.id}>'s` : "Your"} account has been successfully linked to \`${nickname}\``,
+        { text: "by @.kathund | /help [command] for more information", iconURL: "https://i.imgur.com/uUuZx2E.png" }
+      );
+  
+      await interaction.editReply({ embeds: [embed] });
 
       const updateRolesCommand = require("./updateCommand.js");
       if (updateRolesCommand === undefined) {
@@ -114,7 +112,7 @@ module.exports = {
           iconURL: "https://i.imgur.com/uUuZx2E.png",
         });
 
-      await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
+      await interaction.editReply({ embeds: [errorEmbed] });
 
       if (
         error !== "You are already linked to a Minecraft account. Please run /unverify first." &&
