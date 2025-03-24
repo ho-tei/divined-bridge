@@ -13,11 +13,11 @@ module.exports = {
 
   execute: async (interaction, user) => {
     try {
+      await interaction.deferReply({ ephemeral: true }); // Ensures we don't hit the reply error
+
       const linkedData = readFileSync("data/linked.json");
       if (!linkedData) {
-        throw new HypixelDiscordChatBridgeError(
-          "The linked data file does not exist. Please contact an administrator.",
-        );
+        throw new HypixelDiscordChatBridgeError("The linked data file does not exist. Please contact an administrator.");
       }
 
       const linked = JSON.parse(linkedData);
@@ -131,15 +131,6 @@ module.exports = {
           skywarsWLRatio: player.stats.skywars.WLRatio,
           skywarsPlayedGames: player.stats.skywars.playedGames,
 
-          duelsTitle: player.stats?.duels?.division || 0,
-          duelsKills: player.stats?.duels?.kills || 0,
-          duelsDeaths: player.stats?.duels?.deaths || 0,
-          duelsKDRatio: player.stats?.duels?.KDRatio || 0,
-          duelsWins: player.stats?.duels?.wins || 0,
-          duelsLosses: player.stats?.duels?.losses || 0,
-          duelsWLRatio: player.stats?.duels?.WLRatio || 0,
-          duelsPlayedGames: player.stats?.duels?.playedGames || 0,
-
           level: player.level,
           rank: player.rank,
           karma: player.karma,
@@ -157,11 +148,7 @@ module.exports = {
         { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
       );
 
-      if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({ embeds: [updateRole], ephemeral: true });
-      } else {
-        await interaction.editReply({ embeds: [updateRole] });
-      }
+      await interaction.editReply({ embeds: [updateRole] });
     } catch (error) {
       const errorEmbed = new EmbedBuilder()
         .setColor(15548997)
@@ -172,7 +159,7 @@ module.exports = {
           iconURL: "https://i.imgur.com/uUuZx2E.png",
         });
 
-      if (interaction.replied || interaction.deferred) {
+      if (interaction.replied) {
         await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
       } else {
         await interaction.editReply({ embeds: [errorEmbed] });
