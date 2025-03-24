@@ -1,11 +1,3 @@
-const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
-const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
-const { replaceVariables } = require("../../contracts/helperFunctions.js");
-const { SuccessEmbed } = require("../../contracts/embedHandler.js");
-const { EmbedBuilder } = require("discord.js");
-const config = require("../../../config.json");
-const { readFileSync } = require("fs");
-
 module.exports = {
   name: "update",
   verificationCommand: true,
@@ -53,7 +45,11 @@ module.exports = {
         { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" }
       );
 
-      await interaction.editReply({ embeds: [updateRole] });
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp({ embeds: [updateRole], ephemeral: true });
+      } else {
+        await interaction.reply({ embeds: [updateRole], ephemeral: true });
+      }
     } catch (error) {
       const errorEmbed = new EmbedBuilder()
         .setColor(15548997)
@@ -64,7 +60,11 @@ module.exports = {
           iconURL: "https://i.imgur.com/uUuZx2E.png",
         });
 
-      await interaction.editReply({ embeds: [errorEmbed] });
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
+      } else {
+        await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+      }
     }
   },
 };
