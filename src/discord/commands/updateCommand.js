@@ -157,7 +157,7 @@ module.exports = {
         { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
       );
 
-      await interaction.followUp({ embeds: [updateRole], ephemeral: true });
+      await interaction.reply({ embeds: [updateRole], ephemeral: true });
     } catch (error) {
       const errorEmbed = new EmbedBuilder()
         .setColor(15548997)
