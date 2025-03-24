@@ -85,7 +85,7 @@ module.exports = {
           iconURL: "https://i.imgur.com/uUuZx2E.png",
         });
 
-      await interaction.followUp({ embeds: [embed], flags: MessageFlags.Ephemeral});
+      await interaction.followUp({ embeds: [embed], ephemeral: true});
 
       const updateRolesCommand = require("./updateCommand.js");
       if (updateRolesCommand === undefined) {
