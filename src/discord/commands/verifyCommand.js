@@ -58,6 +58,14 @@ module.exports = {
         }
       }
 
+
+      
+      const embed = new SuccessEmbed(
+        `${user ? `<@${user.id}>'s` : "Your"} account has been successfully linked to \`${nickname}\``,
+        { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
+      );
+      await interaction.deferReply();
+
       const discordUsername = socialMedia.find((media) => media.id === "DISCORD")?.link;
       if (discordUsername === undefined && bypassChecks !== true) {
         throw new HypixelDiscordChatBridgeError("This player does not have a Discord linked.");
@@ -77,12 +85,8 @@ module.exports = {
       linked[interaction.user.id] = uuid;
       writeFileSync("data/linked.json", JSON.stringify(linked, null, 2));
 
-      const embed = new SuccessEmbed(
-        `${user ? `<@${user.id}>'s` : "Your"} account has been successfully linked to \`${nickname}\``,
-        { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
-      );
-
-      await interaction.deferReply({ embeds: [embed], ephemeral: true });
+    
+      await interaction.editReply({ embeds: [embed], ephemeral: true });
 
       const updateRolesCommand = require("./updateCommand.js");
       if (updateRolesCommand === undefined) {
