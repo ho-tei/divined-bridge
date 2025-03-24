@@ -24,9 +24,7 @@ module.exports = {
 
       const linkedData = readFileSync("data/linked.json");
       if (!linkedData) {
-        throw new HypixelDiscordChatBridgeError(
-          "The linked data file does not exist. Please contact an administrator.",
-        );
+        throw new HypixelDiscordChatBridgeError("The linked data file does not exist. Please contact an administrator.");
       }
 
       const linked = JSON.parse(linkedData);
@@ -34,16 +32,16 @@ module.exports = {
         throw new HypixelDiscordChatBridgeError("The linked data file is malformed. Please contact an administrator.");
       }
 
-      if (bypassChecks === true && user) {
+      if (bypassChecks && user) {
         interaction.user = user;
       }
 
       if (linked[interaction.user.id]) {
-        if (bypassChecks === true) {
+        if (bypassChecks) {
           delete linked[interaction.user.id];
         } else {
           throw new HypixelDiscordChatBridgeError(
-            "You are already linked to a Minecraft account. Please run /unverify first.",
+            "You are already linked to a Minecraft account. Please run /unverify first."
           );
         }
       }
@@ -51,11 +49,11 @@ module.exports = {
       const username = interaction.options.getString("name");
       const { socialMedia, nickname, uuid } = await hypixelRebornAPI.getPlayer(username);
       if (Object.values(linked).includes(uuid)) {
-        if (bypassChecks === true) {
+        if (bypassChecks) {
           delete linked[Object.keys(linked).find((key) => linked[key] === uuid)];
         } else {
           throw new HypixelDiscordChatBridgeError(
-            "This player is already linked to a Discord account. Please contact an administrator.",
+            "This player is already linked to a Discord account. Please contact an administrator."
           );
         }
       }
@@ -67,7 +65,7 @@ module.exports = {
 
       if (discordUsername?.toLowerCase() !== interaction.user.username.toLowerCase() && !bypassChecks) {
         throw new HypixelDiscordChatBridgeError(
-          `The player '${nickname}' has linked their Discord account to a different account ('${discordUsername}').`,
+          `The player '${nickname}' has linked their Discord account to a different account ('${discordUsername}').`
         );
       }
 
@@ -102,7 +100,7 @@ module.exports = {
         .replaceAll("Error: [hypixel-api-reborn] ", "")
         .replaceAll(
           "Unprocessable Entity! For help join our Discord Server https://discord.gg/NSEBNMM",
-          "This player does not exist. (Mojang API might be down)",
+          "This player does not exist. (Mojang API might be down)"
         );
 
       const errorEmbed = new EmbedBuilder()
@@ -114,7 +112,7 @@ module.exports = {
           iconURL: "https://i.imgur.com/uUuZx2E.png",
         });
 
-      await interaction.editReply({ embeds: [errorEmbed] });
+      await interaction.editReply({ embeds: [errorEmbed] }).catch(console.error);
     }
   },
 };
