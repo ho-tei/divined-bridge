@@ -53,7 +53,7 @@ execute: async (interaction, user) => {
             { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" }
         );
 
-        await interaction.followUp({ embeds: [updateRole], ephemeral: true });
+        await interaction.followUp({ embeds: [updateRole], ephemeral: true }); // Only follow up
     } catch (error) {
         const errorEmbed = new EmbedBuilder()
             .setColor(15548997)
@@ -64,6 +64,7 @@ execute: async (interaction, user) => {
                 iconURL: "https://i.imgur.com/uUuZx2E.png",
             });
 
-        await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
+        await interaction.followUp({ embeds: [errorEmbed], ephemeral: true }); // Only follow up
     }
-},
+  },
+};
