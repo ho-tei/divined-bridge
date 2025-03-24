@@ -1,3 +1,11 @@
+const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
+const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
+const { replaceVariables } = require("../../contracts/helperFunctions.js");
+const { SuccessEmbed } = require("../../contracts/embedHandler.js");
+const { EmbedBuilder } = require("discord.js");
+const config = require("../../../config.json");
+const { readFileSync } = require("fs");
+
 execute: async (interaction, user) => {
     try {
         const linkedData = readFileSync("data/linked.json");
