@@ -20,8 +20,6 @@ module.exports = {
 
   execute: async (interaction, user, bypassChecks = false) => {
     try {
-      await interaction.deferReply({ ephemeral: true });
-
       const linkedData = readFileSync("data/linked.json");
       if (linkedData === undefined) {
         throw new HypixelDiscordChatBridgeError(
@@ -84,7 +82,7 @@ module.exports = {
         { text: "by @.kathund | /help [command] for more information", iconURL: "https://i.imgur.com/uUuZx2E.png" }
       );
   
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.followUp({ embeds: [embed], ephemeral: true });
 
       const updateRolesCommand = require("./updateCommand.js");
       if (updateRolesCommand === undefined) {
