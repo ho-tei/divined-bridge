@@ -77,5 +77,5 @@ execute: async (interaction, user, bypassInteractionCheck = false) => {
         } else {
             await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
         }
-    }
+    },
 };
