@@ -11,7 +11,7 @@ module.exports = {
   verificationCommand: true,
   description: "Update your current roles",
 
-  execute: async (interaction, user) => {
+  execute: async (interaction, user, bypassChecks = false) => {
     try {
       if (!bypassChecks) {
         await interaction.deferReply({ ephemeral: true });
