@@ -72,7 +72,7 @@ execute: async (interaction, user, bypassChecks = false) => {
             { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" }
         );
 
-        await interaction.followUp({ embeds: [embed], ephemeral: true });
+        await interaction.editReply({ embeds: [embed] });
 
         const updateRolesCommand = require("./updateCommand.js");
         if (!updateRolesCommand) {
