@@ -2,7 +2,7 @@ const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js")
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
 const { writeFileSync, readFileSync } = require("fs");
 const config = require("../../../config.json");
-const { EmbedBuilder, MessageFlags } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const { SuccessEmbed } = require("../../contracts/embedHandler.js");
 
 module.exports = {
@@ -18,12 +18,11 @@ module.exports = {
     },
   ],
 
-execute: async (interaction, user, bypassChecks = false) => {
+  execute: async (interaction, user, bypassChecks = false) => {
     try {
         await interaction.deferReply({ ephemeral: true });
-      
+
         const linkedData = readFileSync("data/linked.json");
-        interaction.deferReply({ ephemeral: true });
         if (!linkedData) {
             throw new HypixelDiscordChatBridgeError("The linked data file does not exist. Please contact an administrator.");
         }
@@ -47,6 +46,7 @@ execute: async (interaction, user, bypassChecks = false) => {
 
         const username = interaction.options.getString("name");
         const { socialMedia, nickname, uuid } = await hypixelRebornAPI.getPlayer(username);
+
         if (Object.values(linked).includes(uuid)) {
             if (bypassChecks === true) {
                 delete linked[Object.keys(linked).find((key) => linked[key] === uuid)];
@@ -67,16 +67,12 @@ execute: async (interaction, user, bypassChecks = false) => {
         linked[interaction.user.id] = uuid;
         writeFileSync("data/linked.json", JSON.stringify(linked, null, 2));
 
-        const embed = new SuccessEmbed(
+        const successEmbed = new SuccessEmbed(
             `${user ? `<@${user.id}>'s` : "Your"} account has been successfully linked to \`${nickname}\``,
             { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" }
         );
 
-        if (!interaction.replied && !interaction.deferred) {
-          await interaction.editReply({ embeds: [embed] });
-        } else {
-          await interaction.followUp({ embeds: [embed], ephemeral: true });
-        }
+        await interaction.editReply({ embeds: [successEmbed] });
 
         const updateRolesCommand = require("./updateCommand.js");
         if (!updateRolesCommand) {
@@ -85,7 +81,6 @@ execute: async (interaction, user, bypassChecks = false) => {
 
         await updateRolesCommand.execute(interaction, user);
     } catch (error) {
-        console.log(error);
         error = error.toString()
             .replaceAll("Error: [hypixel-api-reborn] ", "")
             .replaceAll("Unprocessable Entity! For help join our Discord Server https://discord.gg/NSEBNMM",
@@ -101,9 +96,9 @@ execute: async (interaction, user, bypassChecks = false) => {
             });
 
         if (!interaction.replied && !interaction.deferred) {
-          await interaction.editReply({ embeds: [embed] });
+            await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
         } else {
-          await interaction.followUp({ embeds: [embed], ephemeral: true });
+            await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
         }
     }
   },
