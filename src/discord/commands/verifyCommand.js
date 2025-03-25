@@ -82,7 +82,6 @@ module.exports = {
         await interaction.followUp({ embeds: [successEmbed], ephemeral: true });
 
         const updateRolesCommand = require("./updateCommand.js");
-        await updateRolesCommand.execute(interaction, user, true);
         if (!updateRolesCommand) {
             throw new HypixelDiscordChatBridgeError("The update command does not exist. Please contact an administrator.");
         }
