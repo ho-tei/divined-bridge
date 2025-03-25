@@ -12,7 +12,7 @@ class Embed extends EmbedBuilder {
       console.log("Middleware: Deferring interaction");
       await interaction.deferReply({ ephemeral: true });
     }
-  constructor(color = 3447003, title, description, footer);
+  constructor(color = 3447003, title, description, footer)
     super();
 
     this.setFooter({
