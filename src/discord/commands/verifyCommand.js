@@ -20,6 +20,8 @@ module.exports = {
 
 execute: async (interaction, user, bypassChecks = false) => {
     try {
+        await interaction.deferReply({ ephemeral: true });
+      
         const linkedData = readFileSync("data/linked.json");
         interaction.deferReply({ ephemeral: true });
         if (!linkedData) {
