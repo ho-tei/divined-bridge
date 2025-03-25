@@ -79,6 +79,7 @@ module.exports = {
             { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" }
         );
 
+        console.log("Sending success reply...");
         await interaction.editReply({ embeds: [successEmbed] });
 
         const updateRolesCommand = require("./updateCommand.js");
