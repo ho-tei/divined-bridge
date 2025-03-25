@@ -79,7 +79,8 @@ module.exports = {
             throw new HypixelDiscordChatBridgeError("The update command does not exist. Please contact an administrator.");
         }
 
-        await updateRolesCommand.execute(interaction, user);
+        await updateRolesCommand.execute(interaction, user, true); 
+
     } catch (error) {
         error = error.toString()
             .replaceAll("Error: [hypixel-api-reborn] ", "")
