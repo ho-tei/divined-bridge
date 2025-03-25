@@ -20,6 +20,7 @@ module.exports = {
 
   execute: async (interaction, user, bypassChecks = false) => {
     try {
+        console.log('whos touching this shit', interaction.deferred);
         console.log("Verifying user...");
       
         if (!interaction.deferred && !interaction.replied) {
