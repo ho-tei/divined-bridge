@@ -81,7 +81,7 @@ module.exports = {
         );
 
         console.log("Sending success reply...");
-        await interaction.editReply({ embeds: [successEmbed] });
+        await interaction.editReply({ embeds: [successEmbed], ephemeral: true });
 
         const updateRolesCommand = require("./updateCommand.js");
         if (!updateRolesCommand) {
