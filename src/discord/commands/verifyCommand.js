@@ -75,9 +75,9 @@ module.exports = {
         );
 
         if (!interaction.replied && !interaction.deferred) {
-            await interaction.editReply({ embeds: [successEmbed] });
+            await interaction.editReply({ embeds: [successEmbed], ephemeral: true });
         } else {
-            await interaction.followUp({ embeds: [successEmbed] });
+            await interaction.followUp({ embeds: [successEmbed], ephemeral: true });
         }
 
         const updateRolesCommand = require("./updateCommand.js");
