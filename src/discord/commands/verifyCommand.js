@@ -21,6 +21,7 @@ module.exports = {
 execute: async (interaction, user, bypassChecks = false) => {
     try {
         const linkedData = readFileSync("data/linked.json");
+        interaction.deferReply({ ephemeral: true });
         if (!linkedData) {
             throw new HypixelDiscordChatBridgeError("The linked data file does not exist. Please contact an administrator.");
         }
