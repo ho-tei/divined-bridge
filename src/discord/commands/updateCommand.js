@@ -11,8 +11,12 @@ module.exports = {
   verificationCommand: true,
   description: "Update your current roles",
 
-execute: async (interaction, user) => {
+execute: async (interaction, user, bypassInteractionCheck = false) => {
     try {
+        if (!bypassInteractionCheck) {
+            await interaction.deferReply({ ephemeral: true });
+        }
+
         const linkedData = readFileSync("data/linked.json");
         if (!linkedData) {
             throw new HypixelDiscordChatBridgeError("The linked data file does not exist. Please contact an administrator.");
@@ -48,15 +52,15 @@ execute: async (interaction, user) => {
 
         interaction.member.setNickname(player.nickname, "Updated Roles");
 
-        const updateRole = new SuccessEmbed(
+        const updateRoleEmbed = new SuccessEmbed(
             `<@${interaction.user.id}>'s roles have been successfully synced with \`${player.nickname}\`!`,
             { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" }
         );
 
-        if (!interaction.replied && !interaction.deferred) {
-            await interaction.editReply({ embeds: [updateRole] });
+        if (!bypassInteractionCheck) {
+            await interaction.editReply({ embeds: [updateRoleEmbed] });
         } else {
-            await interaction.followUp({ embeds: [updateRole], ephemeral: true });
+            await interaction.followUp({ embeds: [updateRoleEmbed], ephemeral: true });
         }
     } catch (error) {
         const errorEmbed = new EmbedBuilder()
@@ -74,5 +78,4 @@ execute: async (interaction, user) => {
             await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
         }
     }
-  },
-};
+}
