@@ -7,6 +7,11 @@ const { EmbedBuilder } = require("discord.js");
  * @param {string} description - The description of the embed.
  */
 class Embed extends EmbedBuilder {
+  async handle(interaction) {
+    if (!interaction.deferred && !interaction.replied) {
+      console.log("Middleware: Deferring interaction");
+      await interaction.deferReply({ ephemeral: true });
+    }
   constructor(color = 3447003, title, description, footer) {
     super();
 
