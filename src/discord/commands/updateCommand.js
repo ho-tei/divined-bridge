@@ -13,9 +13,9 @@ module.exports = {
 
   execute: async (interaction, user) => {
     try {
-      if (!bypassInteractionCheck) {
-            await interaction.deferReply({ ephemeral: true });
-        }
+      if (!bypassChecks) {
+        await interaction.deferReply({ ephemeral: true });
+      }
       
       const linkedData = readFileSync("data/linked.json");
       if (!linkedData) {
