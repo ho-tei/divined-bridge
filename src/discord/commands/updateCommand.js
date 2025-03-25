@@ -13,6 +13,10 @@ module.exports = {
 
   execute: async (interaction, user) => {
     try {
+      if (!bypassInteractionCheck) {
+            await interaction.deferReply({ ephemeral: true });
+        }
+      
       const linkedData = readFileSync("data/linked.json");
       if (!linkedData) {
         throw new HypixelDiscordChatBridgeError(
@@ -168,7 +172,11 @@ module.exports = {
           iconURL: "https://i.imgur.com/uUuZx2E.png",
         });
 
-      await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
+      if (!interaction.replied && !interaction.deferred) {
+            await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
+        } else {
+            await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
+        }
     }
   },
 };
