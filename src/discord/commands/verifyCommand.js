@@ -20,7 +20,9 @@ module.exports = {
 
   execute: async (interaction, user, bypassChecks = false) => {
     try {
-        await interaction.deferReply({ ephemeral: true });
+        if (!interaction.deferred && !interaction.replied) {
+            await interaction.deferReply({ ephemeral: true });
+        }
 
         const linkedData = readFileSync("data/linked.json");
         if (!linkedData) {
@@ -72,7 +74,11 @@ module.exports = {
             { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" }
         );
 
-        await interaction.editReply({ embeds: [successEmbed] });
+        if (!interaction.replied && !interaction.deferred) {
+            await interaction.editReply({ embeds: [successEmbed] });
+        } else {
+            await interaction.followUp({ embeds: [successEmbed] });
+        }
 
         const updateRolesCommand = require("./updateCommand.js");
         if (!updateRolesCommand) {
