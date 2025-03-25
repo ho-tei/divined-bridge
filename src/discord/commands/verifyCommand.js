@@ -72,7 +72,11 @@ execute: async (interaction, user, bypassChecks = false) => {
             { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" }
         );
 
-        await interaction.editReply({ embeds: [embed] });
+        if (!interaction.replied && !interaction.deferred) {
+          await interaction.editReply({ embeds: [embed] });
+        } else {
+          await interaction.followUp({ embeds: [embed], ephemeral: true });
+        }
 
         const updateRolesCommand = require("./updateCommand.js");
         if (!updateRolesCommand) {
@@ -96,7 +100,11 @@ execute: async (interaction, user, bypassChecks = false) => {
                 iconURL: "https://i.imgur.com/uUuZx2E.png",
             });
 
-        await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
+        if (!interaction.replied && !interaction.deferred) {
+          await interaction.editReply({ embeds: [embed] });
+        } else {
+          await interaction.followUp({ embeds: [embed], ephemeral: true });
+        }
     }
   },
 };
