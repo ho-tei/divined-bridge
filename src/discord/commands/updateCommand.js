@@ -78,4 +78,4 @@ execute: async (interaction, user, bypassInteractionCheck = false) => {
             await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
         }
     }
-}
+};
