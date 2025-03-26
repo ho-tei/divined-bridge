@@ -25,7 +25,7 @@ module.exports = {
 
       const uuid = linked[interaction.user.id];
       if (uuid === undefined) {
-        throw new HypixelDiscordChatBridgeError(You are not verified. Please run /verify to continue.);
+        throw new HypixelDiscordChatBridgeError("You are not verified. Please run /verify to continue.");
       }
 
       delete linked[interaction.user.id];
