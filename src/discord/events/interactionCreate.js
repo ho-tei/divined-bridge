@@ -14,9 +14,6 @@ module.exports = {
     try {
       if (interaction.isChatInputCommand()) {
         const memberRoles = interaction.member.roles.cache.map((role) => role.id);
-        const command = interaction.client.commands.get(interaction.commandName);
-        
-        if (!command) return;
         
         if (!command.verificationCommand) {
           await interaction.deferReply({ ephemeral: false }).catch(() => {});
