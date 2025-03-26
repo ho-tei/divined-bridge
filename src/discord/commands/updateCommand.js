@@ -65,8 +65,8 @@ module.exports = {
         await interaction.member.roles.add(config.verification.verifiedRole, "Updated Roles");
       }
 
-      const [hypixelGuild, player] = await Promise.all([
-        hypixelRebornAPI.getGuild("player", bot.username),
+      const [hypixelGuild, player] = await Promise.all([ 
+        hypixelRebornAPI.getGuild("player", bot.username), 
         hypixelRebornAPI.getPlayer(uuid),
       ]);
 
@@ -77,6 +77,9 @@ module.exports = {
       const guildMember = hypixelGuild.members.find((m) => m.uuid === uuid);
       if (guildMember) {
         await interaction.member.roles.add(config.verification.guildMemberRole, "Updated Roles");
+
+        if (config.verification.eligibilityRole) {
+          await interaction.member.roles.add(config.verification.eligibilityRole, "Updated Roles");
         }
 
         if (config.verification.ranks.length > 0 && guildMember.rank) {
@@ -158,8 +161,8 @@ module.exports = {
       );
 
       const updateRole = new SuccessEmbed(
-        `<@${interaction.user.id}>'s roles have been successfully synced with \`${player.nickname ?? "Unknown"}\`!`,
-        { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
+        `<@${interaction.user.id}>'s roles have been successfully synced with ${player.nickname ?? "Unknown"}!`,
+        { text: 'by @.kathund | /help [command] for more information', iconURL: "https://i.imgur.com/uUuZx2E.png" },
       );
 
       await interaction.followUp({ embeds: [updateRole], ephemeral: true });
@@ -169,15 +172,15 @@ module.exports = {
         .setAuthor({ name: "An Error has occurred" })
         .setDescription(`\`\`\`${error}\`\`\``)
         .setFooter({
-          text: `by @.kathund | /help [command] for more information`,
+          text: 'by @.kathund | /help [command] for more information',
           iconURL: "https://i.imgur.com/uUuZx2E.png",
         });
 
       if (!interaction.replied && !interaction.deferred) {
-            await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
-        } else {
-            await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
-        }
+        await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
+      } else {
+        await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
+      }
     }
   },
 };
