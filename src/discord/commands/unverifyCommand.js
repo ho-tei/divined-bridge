@@ -34,7 +34,7 @@ module.exports = {
       delete linked[interaction.user.id];
       writeFileSync("data/linked.json", JSON.stringify(linked, null, 2));
 
-      const member - interaction.member;
+      const member = interaction.member;
       if (!member) {
         throw new HypixelDiscordChatBridgeError("Could not find your Discord profile. Please try again.");
       }
