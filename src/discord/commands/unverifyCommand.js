@@ -9,7 +9,7 @@ module.exports = {
   description: "Remove your linked Minecraft account",
   verificationCommand: true,
 
-execute: async (interaction) => {
+  execute: async (interaction) => {
     try {
       const linkedData = readFileSync("data/linked.json");
       if (!linkedData) {
@@ -35,7 +35,7 @@ execute: async (interaction) => {
         `You have successfully unlinked \`${await getUsername(uuid)}\`. Run \`/verify\` to link a new account.`,
         { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
       );
-      await interaction.followUp({ embeds: [updateRole] });
+      await interaction.editReply({ embeds: [updateRole] }); // Edit reply instead of followUp
     } catch (error) {
       const errorEmbed = new EmbedBuilder()
         .setColor(15548997)
@@ -49,3 +49,4 @@ execute: async (interaction) => {
       await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
     }
   },
+};
