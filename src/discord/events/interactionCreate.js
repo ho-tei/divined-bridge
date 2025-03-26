@@ -12,7 +12,7 @@ module.exports = {
    */
   async execute(interaction) {
     try {
-      if (interaction.isChatInputCommand()) {
+      if (interaction.commandName !== "verify") {
         const memberRoles = interaction.member.roles.cache.map((role) => role.id);
         
         if (!command.verificationCommand) {
