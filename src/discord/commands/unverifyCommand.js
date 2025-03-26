@@ -9,7 +9,7 @@ module.exports = {
   description: "Remove your linked Minecraft account",
   verificationCommand: true,
 
-  execute: async (interaction) => {
+execute: async (interaction) => {
     try {
       const linkedData = readFileSync("data/linked.json");
       if (!linkedData) {
@@ -25,27 +25,27 @@ module.exports = {
 
       const uuid = linked[interaction.user.id];
       if (uuid === undefined) {
-        throw new HypixelDiscordChatBridgeError("You are not verified. Please run /verify to continue.");
+        throw new HypixelDiscordChatBridgeError(`You are not verified. Please run /verify to continue.`);
       }
 
       delete linked[interaction.user.id];
       writeFileSync("data/linked.json", JSON.stringify(linked, null, 2));
 
-      const updateRole = new SuccessEmbed("You have successfully unlinked \${await getUsername(uuid)}\. Run \/verify\ to link a new account.",
-        { text: by @.kathund | /help [command] for more information, iconURL: "https://i.imgur.com/uUuZx2E.png" },
+      const updateRole = new SuccessEmbed(
+        `You have successfully unlinked \`${await getUsername(uuid)}\`. Run \`/verify\` to link a new account.`,
+        { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
       );
       await interaction.followUp({ embeds: [updateRole] });
     } catch (error) {
       const errorEmbed = new EmbedBuilder()
         .setColor(15548997)
         .setAuthor({ name: "An Error has occurred" })
-        .setDescription(\\\${error}\\\`)
+        .setDescription(`\`\`\`${error}\`\`\``)
         .setFooter({
-          text: by @.kathund | /help [command] for more information,
+          text: `by @.kathund | /help [command] for more information`,
           iconURL: "https://i.imgur.com/uUuZx2E.png",
         });
 
       await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
     }
   },
-};
