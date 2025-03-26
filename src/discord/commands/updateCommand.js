@@ -78,7 +78,12 @@ module.exports = {
       if (guildMember) {
         await interaction.member.roles.add(config.verification.guildMemberRole, "Updated Roles");
 
-        if (config.verification.eligibilityRole) {
+        const joinedTimestamp = guildMember.joined;
+        const joinedDate = new Date(joinedTimestamp);
+        const currentDate = new Date();
+        const daysInGuild = (currentDate - joinedDate) / (1000 * 60 * 60 * 24);
+        
+        if (config.verification.eligibilityRole && daysInGuild >= 14) {
           await interaction.member.roles.add(config.verification.eligibilityRole, "Updated Roles");
         }
 
