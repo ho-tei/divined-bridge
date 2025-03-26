@@ -22,7 +22,7 @@ if (config.verification.autoUpdater) {
   try {
     hypixel.getGuild("name", "Divined").then((guild) => {
       guild.members.forEach(async (member) => {
-        if ((Date.now() - member.joinedAtTimestamp) > 1209600) {
+        if ((Date.now() - member.joinedAtTimestamp) > 1209600000) {
           const discordID = Object.keys(linked).find((key) => linked[key] === member.uuid);
           if (discordID === undefined) {
             return Logger.warnMessage(`${member} is not linked`);
