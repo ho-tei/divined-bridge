@@ -12,7 +12,7 @@ module.exports = {
    */
   async execute(interaction) {
     try {
-      if (interaction.commandName !== "verify") {
+      if (interaction.commandName !== "verify" && command.name !== "unverify") {
         const memberRoles = interaction.member.roles.cache.map((role) => role.id);
         
         if (!command.verificationCommand) {
