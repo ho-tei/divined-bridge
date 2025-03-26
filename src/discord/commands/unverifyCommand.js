@@ -40,13 +40,14 @@ module.exports = {
       }
 
       const botRole = interaction.guild.members.me.roles.highest;
-      const removableRoles = member.roles.chace.filter((role) => role.position < botRole.position);
+      const removableRoles = member.roles.cache.filter((role) => role.position < botRole.position);
 
       await member.roles.remove(removableRoles, "unverified user - roles reset");
 
       const guestRole = config.verification.guestRole;
       if (guestRole) {
         await member.roles.add(guestRole, "Unverified user - assigned Guest role");
+      }
         
       const updateRole = new SuccessEmbed(
         `You have successfully unlinked \`${await getUsername(uuid)}\`. Run \`/verify\` to link a new account.`,
