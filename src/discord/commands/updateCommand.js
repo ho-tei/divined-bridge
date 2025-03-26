@@ -77,14 +77,6 @@ module.exports = {
       const guildMember = hypixelGuild.members.find((m) => m.uuid === uuid);
       if (guildMember) {
         await interaction.member.roles.add(config.verification.guildMemberRole, "Updated Roles");
-
-        const joinedTimestamp = guildMember.joined;
-        const joinedDate = new Date(joinedTimestamp);
-        const currentDate = new Date();
-        const daysInGuild = (currentDate - joinedDate) / (1000 * 60 * 60 * 24);
-        
-        if (config.verification.eligibilityRole && daysInGuild >= 14) {
-          await interaction.member.roles.add(config.verification.eligibilityRole, "Updated Roles");
         }
 
         if (config.verification.ranks.length > 0 && guildMember.rank) {
