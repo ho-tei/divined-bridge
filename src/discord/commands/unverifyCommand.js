@@ -35,7 +35,7 @@ module.exports = {
         `You have successfully unlinked \`${await getUsername(uuid)}\`. Run \`/verify\` to link a new account.`,
         { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
       );
-      await interaction.editReply({ embeds: [updateRole] }); // Edit reply instead of followUp
+      await interaction.followUp({ embeds: [updateRole] });
     } catch (error) {
       const errorEmbed = new EmbedBuilder()
         .setColor(15548997)
