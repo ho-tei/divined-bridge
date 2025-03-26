@@ -31,8 +31,7 @@ module.exports = {
       delete linked[interaction.user.id];
       writeFileSync("data/linked.json", JSON.stringify(linked, null, 2));
 
-      const updateRole = new SuccessEmbed(
-        You have successfully unlinked \${await getUsername(uuid)}\. Run \/verify\ to link a new account.,
+      const updateRole = new SuccessEmbed("You have successfully unlinked \${await getUsername(uuid)}\. Run \/verify\ to link a new account.",
         { text: by @.kathund | /help [command] for more information, iconURL: "https://i.imgur.com/uUuZx2E.png" },
       );
       await interaction.followUp({ embeds: [updateRole] });
