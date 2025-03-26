@@ -11,6 +11,8 @@ module.exports = {
 
   execute: async (interaction) => {
     try {
+      await interaction.deferReply({ ephemeral: true});
+      
       const linkedData = readFileSync("data/linked.json");
       if (!linkedData) {
         throw new HypixelDiscordChatBridgeError(
@@ -35,7 +37,7 @@ module.exports = {
         `You have successfully unlinked \`${await getUsername(uuid)}\`. Run \`/verify\` to link a new account.`,
         { text: `by @.kathund | /help [command] for more information`, iconURL: "https://i.imgur.com/uUuZx2E.png" },
       );
-      await interaction.followUp({ embeds: [updateRole] });
+      await interaction.editReply({ embeds: [updateRole] });
     } catch (error) {
       const errorEmbed = new EmbedBuilder()
         .setColor(15548997)
