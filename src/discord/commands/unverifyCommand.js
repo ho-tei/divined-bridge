@@ -40,7 +40,14 @@ module.exports = {
       }
 
       const botRole = interaction.guild.members.me.roles.highest;
-      const removableRoles = member.roles.cache.filter((role) => role.position < botRole.position);
+      
+      const botAssignedRoles = config.verification.ranks.map((rank) => rank.role);
+      botAssignedRoles.push(config.verification.verifiedRole);
+      botAssignedRoles.push(config.verification.guildMemberRole);
+
+      const removableRoles = member.roles.cache.filter((role) =>
+        botAssignedRoles.includes(role.id)
+      );
 
       await member.roles.remove(removableRoles, "unverified user - roles reset");
 
