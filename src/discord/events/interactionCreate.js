@@ -12,11 +12,11 @@ module.exports = {
    */
   async execute(interaction) {
     try {
-      if (interaction.commandName !== "verify" && command.name !== "unverify") {
+      if (interaction.commandName !== "verify") {
         const memberRoles = interaction.member.roles.cache.map((role) => role.id);
         
         if (!command.verificationCommand) {
-          await interaction.deferReply({ ephemeral: false }).catch(() => {});
+          await interaction.deferReply({ ephemeral: true }).catch(() => {});
         }
         
         if (memberRoles.some((role) => config.discord.commands.blacklistRoles.includes(role))) {
