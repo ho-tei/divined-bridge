@@ -78,6 +78,10 @@ module.exports = {
       if (guildMember) {
         await interaction.member.roles.add(config.verification.guildMemberRole, "Updated Roles");
 
+        if (config.verification.eligibilityRole) {
+          await interaction.member.roles.add(config.verification.eligibilityRole, "Updated Roles");
+        }
+
         if (config.verification.ranks.length > 0 && guildMember.rank) {
           const rank = config.verification.ranks.find((r) => r.name.toLowerCase() == guildMember.rank.toLowerCase());
           if (rank) {
