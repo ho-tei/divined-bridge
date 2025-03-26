@@ -44,6 +44,7 @@ module.exports = {
       const botAssignedRoles = config.verification.ranks.map((rank) => rank.role);
       botAssignedRoles.push(config.verification.verifiedRole);
       botAssignedRoles.push(config.verification.guildMemberRole);
+      botAssignedRoles.push(config.verification.eligibilityRole);
 
       const removableRoles = member.roles.cache.filter((role) =>
         botAssignedRoles.includes(role.id)
