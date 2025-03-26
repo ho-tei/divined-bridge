@@ -20,15 +20,10 @@ module.exports = {
 
   execute: async (interaction, user, bypassChecks = false) => {
     try {
-        console.log('whos touching this shit', interaction.deferred, new Error().stack);
-        console.log("Verifying user...");
       
         if (!interaction.deferred && !interaction.replied) {
-            console.log("Deferring reply as ephemeral...");
             await interaction.deferReply({ ephemeral: true });
-        } else {
-          console.log("Interaction already deferred or replied.");
-        }
+        } 
 
         const linkedData = readFileSync("data/linked.json");
         if (!linkedData) {
