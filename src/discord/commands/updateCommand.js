@@ -107,7 +107,7 @@ module.exports = {
 
       if ((Date.now() - guildMember.joinedAtTimestamp) > 1209600000) {
         try {
-          if(member.roles.cache.has(config.verification.eligibilityRole)) return Logger.discordMessage(`User ${member.user.tag} already has eligibility role`);
+          if(interaction.member.roles.cache.has(config.verification.eligibilityRole)) return Logger.discordMessage(`User ${interaction.member.user.tag} already has eligibility role`);
 
           await interaction.member.roles.add(config.verification.eligibilityRole, "Add eligble role");
           Logger.discordMessage(`Role assigned to ${interaction.member.user.tag}`);
@@ -116,7 +116,7 @@ module.exports = {
         }
 
       } else {
-        Logger.warnMessage(`${member} has been in the guild for less than a week`);
+        Logger.warnMessage(`${interaction.member} has been in the guild for less than a week`);
       }
 
       interaction.member.setNickname(
