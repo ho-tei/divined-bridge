@@ -5,6 +5,7 @@ const { SuccessEmbed } = require("../../contracts/embedHandler.js");
 const { EmbedBuilder } = require("discord.js");
 const config = require("../../../config.json");
 const { readFileSync } = require("fs");
+const Logger = require("../../Logger.js");
 
 module.exports = {
   name: "update",
