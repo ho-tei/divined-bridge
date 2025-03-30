@@ -60,7 +60,7 @@ module.exports = {
 
         throw new HypixelDiscordChatBridgeError("You are not linked to a Minecraft account.");
       }
-      hypixe
+      
       if (!interaction.member.roles.cache.has(config.verification.verifiedRole)) {
         await interaction.member.roles.add(config.verification.verifiedRole, "Updated Roles");
       }
