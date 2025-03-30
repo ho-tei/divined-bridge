@@ -60,7 +60,7 @@ module.exports = {
 
         throw new HypixelDiscordChatBridgeError("You are not linked to a Minecraft account.");
       }
-
+      hypixe
       if (!interaction.member.roles.cache.has(config.verification.verifiedRole)) {
         await interaction.member.roles.add(config.verification.verifiedRole, "Updated Roles");
       }
@@ -77,10 +77,6 @@ module.exports = {
       const guildMember = hypixelGuild.members.find((m) => m.uuid === uuid);
       if (guildMember) {
         await interaction.member.roles.add(config.verification.guildMemberRole, "Updated Roles");
-
-        if (config.verification.eligibilityRole) {
-          await interaction.member.roles.add(config.verification.eligibilityRole, "Updated Roles");
-        }
 
         if (config.verification.ranks.length > 0 && guildMember.rank) {
           const rank = config.verification.ranks.find((r) => r.name.toLowerCase() == guildMember.rank.toLowerCase());
@@ -106,6 +102,20 @@ module.exports = {
             }
           }
         }
+      }
+
+      if ((Date.now() - guildMember.joinedAtTimestamp) > 1209600000) {
+        try {
+          if(member.roles.cache.has(config.verification.eligibilityRole)) return Logger.discordMessage(`User ${member.user.tag} already has eligibility role`);
+
+          await interaction.member.roles.add(config.verification.eligibilityRole, "Add eligble role");
+          Logger.discordMessage(`Role assigned to ${interaction.member.user.tag}`);
+        } catch (error) {
+          Logger.errorMessage("Error assigning role:", error);
+        }
+
+      } else {
+        Logger.warnMessage(`${member} has been in the guild for less than a week`);
       }
 
       interaction.member.setNickname(
