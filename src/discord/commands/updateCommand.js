@@ -79,6 +79,7 @@ module.exports = {
       if (guildMember) {
         await interaction.member.roles.add(config.verification.guildMemberRole, "Updated Roles");
 
+        // add according rank role if the user meets requirements
         if (config.verification.ranks.length > 0 && guildMember.rank) {
           const rank = config.verification.ranks.find((r) => r.name.toLowerCase() == guildMember.rank.toLowerCase());
           if (rank) {
@@ -90,6 +91,21 @@ module.exports = {
 
             await interaction.member.roles.add(rank.role, "Updated Roles");
           }
+        }
+
+        // add eligibility role if the user has been in the guild for more than 2 weeks
+        if ((Date.now() - guildMember.joinedAtTimestamp) > 1209600000) {
+          try {
+            if(interaction.member.roles.cache.has(config.verification.eligibilityRole)) return Logger.discordMessage(`User ${interaction.member.user.tag} already has eligibility role`);
+  
+            await interaction.member.roles.add(config.verification.eligibilityRole, "Add eligble role");
+            Logger.discordMessage(`Role assigned to ${interaction.member.user.tag}`);
+          } catch (error) {
+            Logger.errorMessage("Error assigning role:", error);
+          }
+  
+        } else {
+          Logger.warnMessage(`${interaction.member} has been in the guild for less than a week`);
         }
       } else {
         if (interaction.member.roles.cache.has(config.verification.guildMemberRole)) {
@@ -105,19 +121,7 @@ module.exports = {
         }
       }
 
-      if ((Date.now() - guildMember.joinedAtTimestamp) > 1209600000) {
-        try {
-          if(interaction.member.roles.cache.has(config.verification.eligibilityRole)) return Logger.discordMessage(`User ${interaction.member.user.tag} already has eligibility role`);
-
-          await interaction.member.roles.add(config.verification.eligibilityRole, "Add eligble role");
-          Logger.discordMessage(`Role assigned to ${interaction.member.user.tag}`);
-        } catch (error) {
-          Logger.errorMessage("Error assigning role:", error);
-        }
-
-      } else {
-        Logger.warnMessage(`${interaction.member} has been in the guild for less than a week`);
-      }
+      
 
       interaction.member.setNickname(
         replaceVariables(config.verification.name, {
